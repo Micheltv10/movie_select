@@ -1,3 +1,3 @@
 // Example of config.dart file
-const String apiKey = 'API_KEY';
-const String readAccessToken = 'READ_ACCESS_TOKEN';
+const String apiKey = '51a47514520409cde49010c58f321d56';
+const String readAccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MWE0NzUxNDUyMDQwOWNkZTQ5MDEwYzU4ZjMyMWQ1NiIsIm5iZiI6MTczNjY5MDAxNC4yMjg5OTk5LCJzdWIiOiI2NzgzYzk1ZTc4Y2ZjZDc3ZWQ0ZWI1YzIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.IR53B810fco-1MFZXgnEUfM-JfAvcmZoLjs2twrigoE';
