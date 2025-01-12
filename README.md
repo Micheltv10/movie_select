@@ -11,8 +11,8 @@ This is a Flutter app that allows users to swipe through popular movies and TV s
 
 ## Screenshots
 
-![App Screenshot 1](assets/screenshots/movie_select1.jpg)
-![App Screenshot 2](assets/screenshots/movie_select2.jpg)
+<img src="assets/screenshots/movie_select1.jpg" alt="Details Screen" height="300">
+<img src="assets/screenshots/movie_select2.jpg" alt="Details Screen" height="300">
 
 ## Getting Started
 
