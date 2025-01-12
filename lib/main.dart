@@ -148,7 +148,7 @@ FutureOr<bool> _handleSwipe(int oldIndex, int? currentIndex, CardSwiperDirection
     // Return true to allow the swipe action to continue
     return true;
   }
-
+  // Scaffold widget with an AppBar and CardSwiper
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -221,10 +221,8 @@ FutureOr<bool> _handleSwipe(int oldIndex, int? currentIndex, CardSwiperDirection
         },
         onSwipe: _handleSwipe,
         onEnd: _fetchMoviesAndTvShows,
-      )
-,
+      ),
   );
-
   }
 }
 
@@ -241,7 +239,7 @@ class LikedMoviesPage extends StatelessWidget {
       throw 'Could not launch $imdbUrl';
     }
   }
-
+  // Scaffold widget with an AppBar and ListView
   @override
   Widget build(BuildContext context) {
     return Scaffold(
