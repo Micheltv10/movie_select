@@ -3,13 +3,10 @@ import 'package:tmdb_api/tmdb_api.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
+import 'config.dart';
 
 void main() {
-  const String apiKey = '8d65b26989f07f2ee56da4f92dc7d9b5';
-  const String readAccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZDY1YjI2OTg5ZjA3ZjJlZTU2ZGE0ZjkyZGM3ZDliNSIsIm5iZiI6MTczNjY5MDAxNC4yMjg5OTk5LCJzdWIiOiI2NzgzYzk1ZTc4Y2ZjZDc3ZWQ0ZWI1YzIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.fBJUQqMGn9LOhfriUkJjUMtHKkPlhLv0rXx5U2XF2aQ';
-
   final tmdb = TMDB(ApiKeys(apiKey, readAccessToken));
-
   runApp(MyApp(tmdb: tmdb));
 }
 
