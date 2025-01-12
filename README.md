@@ -1,16 +1,59 @@
-# movie_select
+# Movie and TV Show Swiper App
 
-A new Flutter project.
+This is a Flutter app that allows users to swipe through popular movies and TV shows, similar to the Tinder app. The app fetches movie and TV show data from the [TMDb API](https://www.themoviedb.org/) and displays them in a swipeable interface. Users can like movies and TV shows, and the liked items are saved and link to their respective TMDb pages.
+
+## Features
+
+- Swipe through movie and TV show recommendations
+- Like movies and TV shows
+- Save liked movies and TV shows in a list
+- View more details about each movie or TV show on TMDb website
+
+## Screenshots
+
+![App Screenshot 1](assets/movie_select1.jpg)
+![App Screenshot 2](assets/movie_select2.jpg)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with this project, follow the steps below:
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Install [Flutter](https://flutter.dev/docs/get-started/install)
+- Set up an IDE like [VS Code](https://code.visualstudio.com/) or [Android Studio](https://developer.android.com/studio)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Clone the repository
+
+```bash
+git clone https://github.com/yourusername/movie-swiper-app.git
+cd movie-swiper-app
+```
+
+### Install dependencies
+
+```bash
+flutter pub get
+```
+
+### Set up the TMDb API
+
+1. Sign up for a TMDb API key at [TMDb API](https://www.themoviedb.org/settings/api).
+2. Add the API key in your `lib/config.dart` or wherever you handle your API configuration.
+
+### Run the app
+
+```bash
+flutter run
+```
+
+## Dependencies
+
+- `flutter_card_swiper`: For the swipeable card UI.
+- `url_launcher`: To open TMDb pages in the browser.
+- `tmdb_api`: A wrapper to interact with the TMDb API.
+- `flutter_launcher_icons`: Easy to use App Icons.
+
+---
+
+Feel free to open issues or contribute to the project!
