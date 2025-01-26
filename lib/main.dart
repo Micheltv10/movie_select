@@ -52,6 +52,7 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
   List<dynamic> likedMovies = []; // Stores swiped 'liked' movies
   int currentPage = 1; // Keeps track of the current page for pagination
   bool isLoading = false; // Prevents multiple simultaneous API calls
+  final CardSwiperController swiperController = CardSwiperController();
 
   @override
   void initState() {
@@ -151,6 +152,8 @@ FutureOr<bool> _handleSwipe(int oldIndex, int? currentIndex, CardSwiperDirection
   // Scaffold widget with an AppBar and CardSwiper
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
     appBar: AppBar(
       title: Text('Swipe Movies & TV Shows'),
@@ -171,57 +174,86 @@ FutureOr<bool> _handleSwipe(int oldIndex, int? currentIndex, CardSwiperDirection
     ),
     body: (combinedList.isEmpty)
         ? Center(child: CircularProgressIndicator())
-        : CardSwiper(
-        cardsCount: combinedList.length,
-        cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
-          final item = combinedList[index];
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.black,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                item['poster_path'] != null
-                    ? Image.network(
-                        'https://image.tmdb.org/t/p/w500${item['poster_path']}',
-                        fit: BoxFit.cover,
-                        height: 400,
-                      )
-                    : SizedBox.shrink(),
-                SizedBox(height: 20),
-                Text(
-                  item['title'] ?? item['name'] ?? 'No Title',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Rating: ${item['vote_average'] ?? 'N/A'}',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                SizedBox(height: 10),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: SingleChildScrollView(
-                      child: Text(
-                        item['overview'] ?? 'No Description',
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
+        : Column(
+          children: [
+            Expanded(
+              child: CardSwiper(
+                controller: swiperController,
+                cardsCount: combinedList.length,
+                cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                  final item = combinedList[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.black,
+                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      item['poster_path'] != null
+                          ? Image.network(
+                              'https://image.tmdb.org/t/p/w500${item['poster_path']}',
+                              fit: BoxFit.cover,
+                              height: 400,
+                            )
+                          : SizedBox.shrink(),
+                      SizedBox(height: 20),
+                      Text(
+                        item['title'] ?? item['name'] ?? 'No Title',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Rating: ${item['vote_average'] ?? 'N/A'}',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      SizedBox(height: 10),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: SingleChildScrollView(
+                            child: Text(
+                              item['overview'] ?? 'No Description',
+                              style: TextStyle(fontSize: 16, color: Colors.white70),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                );
+              },
+              onSwipe: _handleSwipe,
+              onEnd: _fetchMoviesAndTvShows,
+                    ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: screenWidth / 2 - 40,
+                    child: ElevatedButton(
+                      
+                      onPressed: () => swiperController.swipe(CardSwiperDirection.left),
+                      child: Icon(Icons.close),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-              ],
-            ),
-          );
-        },
-        onSwipe: _handleSwipe,
-        onEnd: _fetchMoviesAndTvShows,
-      ),
+                  SizedBox(width: 16),
+                  SizedBox(
+                    width: screenWidth / 2 - 40,
+                    child: ElevatedButton(
+                      onPressed: () => swiperController.swipe(CardSwiperDirection.right),
+                      child: Icon(Icons.favorite),
+                    ),
+                  ),
+                ],
+              ),
+
+          ],
+        ),
   );
   }
 }
