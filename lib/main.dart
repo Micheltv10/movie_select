@@ -77,7 +77,7 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
 // Load interstitial ad
 void _loadInterstitialAd() {
   InterstitialAd.load(
-    adUnitId: "ca-app-pub-2675511241339445/8178430428", 
+    adUnitId: afterSwipeAd, 
     request: AdRequest(),
     adLoadCallback: InterstitialAdLoadCallback(
       onAdLoaded: (InterstitialAd ad) {
@@ -315,7 +315,7 @@ class _LikedMoviesPageState extends State<LikedMoviesPage> {
 
   void _loadBannerAd() {
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-2675511241339445/6292006838', 
+      adUnitId: bannerAd, 
       size: AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(
