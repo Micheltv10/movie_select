@@ -108,16 +108,19 @@ void _showInterstitialAd() {
     if (combinedList.isEmpty) {
       return false; 
     }
-
     final index = currentIndex ?? oldIndex;
     final validIndex = (index - 1) >= 0 ? index - 1 : 0;
-    final item = combinedList[validIndex];
+    Map<String, dynamic> item = combinedList[validIndex];
 
     if (movies.contains(item) || tvShows.contains(item)) {
 
       if (direction == CardSwiperDirection.right) {
+        bool ismovie = (oldIndex % 2 == 0);
+        item.addAll({"isMovie": ismovie});
         setState(() {
           likedMovies.add(item);
+          print("Item:" + item.toString());
+          print(item.runtimeType.toString());
         });
       }
     }
@@ -141,7 +144,7 @@ void _showInterstitialAd() {
     });
 
     try {
-      final movieResponse = await widget.tmdb.v3.discover.getMovies(page: currentPage, sortBy: SortMoviesBy.popularityDesc);
+      final movieResponse = await widget.tmdb.v3.discover.getMovies(page: currentPage, sortBy: SortMoviesBy.popularityDesc, includeAdult: false, withWatchProviders: "8");
       final newMovies = movieResponse['results'] ?? [];
 
       final tvResponse = await widget.tmdb.v3.discover.getTvShows(page: currentPage, sortBy: SortTvShowsBy.popularityDesc);
@@ -185,7 +188,7 @@ void _showInterstitialAd() {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Spectare - Swipe Movies & TV Shows'),
+        title: Text('Spectare - Swipe to like'),
         actions: [
           IconButton(
             icon: Icon(Icons.favorite),
@@ -360,9 +363,13 @@ class _LikedMoviesPageState extends State<LikedMoviesPage> {
               itemCount: widget.likedMovies.length,
               itemBuilder: (context, index) {
                 final item = widget.likedMovies[index];
-
-                final tmdbUrl = Uri.parse('https://www.themoviedb.org/movie/${item['id']}');
-
+                Uri tmdbUrl;
+                if (item['isMovie']) {
+                  tmdbUrl = Uri.parse('https://www.themoviedb.org/movie/${item['id']}');
+                } else {
+                  tmdbUrl = Uri.parse('https://www.themoviedb.org/tv/${item['id']}');
+                }
+                
                 return ListTile(
                   onTap: () => _launchURL(tmdbUrl), // Make the item clickable
                   leading: item['poster_path'] != null
