@@ -32,6 +32,7 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
 
   bool includeAdult = false;
   String? selectedGenre;
+  String? selectedWatchProvider;
 
   @override
   void initState() {
@@ -60,12 +61,15 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
           onApplyFilters: _applyFilters,
           initialIncludeAdult: includeAdult,
           initialGenre: selectedGenre,
+          initialWatchProvider: selectedWatchProvider,
+          tmdb: widget.tmdb,
         ),
       ),
     );
   }
 
-  Future<void> _fetchMoviesAndTvShows({bool includeAdult = false, String? genre}) async {
+  Future<void> _fetchMoviesAndTvShows(
+      {bool includeAdult = false, String? genre}) async {
     if (isLoading) return;
 
     setState(() {
@@ -74,12 +78,13 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
 
     try {
       print("Fetching page: $currentPage");
-
+      print("Watch provider: $selectedWatchProvider");
       final movieResponse = await widget.tmdb.v3.discover.getMovies(
         page: currentPage,
         sortBy: SortMoviesBy.popularityDesc,
         includeAdult: includeAdult,
         withGenres: genre,
+        withWatchProviders: selectedWatchProvider,
       );
       final newMovies = movieResponse['results'] ?? [];
       print("Fetched ${newMovies.length} movies");
@@ -99,7 +104,8 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
         currentPage++;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load movies and TV shows: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load movies and TV shows: $e')));
     } finally {
       setState(() {
         isLoading = false;
@@ -133,12 +139,13 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
     }
   }
 
-  FutureOr<bool> _handleSwipe(int oldIndex, int? currentIndex, CardSwiperDirection direction) {
+  FutureOr<bool> _handleSwipe(
+      int oldIndex, int? currentIndex, CardSwiperDirection direction) {
     setState(() {
       swipeCount++;
     });
-    print("Swiped $direction on item at index $oldIndex, swipe count: $swipeCount");
-
+    print(
+        "Swiped $direction on item at index $oldIndex, swipe count: $swipeCount");
 
     if (combinedList.isEmpty) {
       return false;
@@ -198,7 +205,8 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
                   child: CardSwiper(
                     controller: swiperController,
                     cardsCount: combinedList.length,
-                    cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                    cardBuilder:
+                        (context, index, percentThresholdX, percentThresholdY) {
                       final item = combinedList[index];
                       return Container(
                         decoration: BoxDecoration(
@@ -218,22 +226,28 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
                             SizedBox(height: 20),
                             Text(
                               item['title'] ?? item['name'] ?? 'No Title',
-                              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 10),
                             Text(
                               'Rating: ${item['vote_average'] ?? 'N/A'}',
-                              style: TextStyle(fontSize: 16, color: Colors.grey),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
                             ),
                             SizedBox(height: 10),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: SingleChildScrollView(
                                   child: Text(
                                     item['overview'] ?? 'No Description',
-                                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.white70),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -245,7 +259,8 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
                       );
                     },
                     onSwipe: _handleSwipe,
-                    onEnd: () => _fetchMoviesAndTvShows(includeAdult: includeAdult, genre: selectedGenre),
+                    onEnd: () => _fetchMoviesAndTvShows(
+                        includeAdult: includeAdult, genre: selectedGenre),
                   ),
                 ),
                 Row(
@@ -254,7 +269,8 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
                     SizedBox(
                       width: screenWidth / 2 - 40,
                       child: ElevatedButton(
-                        onPressed: () => swiperController.swipe(CardSwiperDirection.left),
+                        onPressed: () =>
+                            swiperController.swipe(CardSwiperDirection.left),
                         child: Icon(Icons.close),
                       ),
                     ),
@@ -262,7 +278,8 @@ class _SwipeMoviesPageState extends State<SwipeMoviesPage> {
                     SizedBox(
                       width: screenWidth / 2 - 40,
                       child: ElevatedButton(
-                        onPressed: () => swiperController.swipe(CardSwiperDirection.right),
+                        onPressed: () =>
+                            swiperController.swipe(CardSwiperDirection.right),
                         child: Icon(Icons.favorite),
                       ),
                     ),
